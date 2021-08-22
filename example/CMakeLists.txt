@@ -9,4 +9,8 @@ include_directories(
 	"${Boost_INCLUDE_DIR}"
 )
 
-add_executable(input EXCLUDE_FROM_ALL input.cpp)
+add_executable(input-example EXCLUDE_FROM_ALL input.cpp)
+
+add_custom_target(example DEPENDS
+	input-example
+)
