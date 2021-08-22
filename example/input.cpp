@@ -1,4 +1,4 @@
-#include "clio/Input.h"
+#include <clio/Input.h>
 
 int main() try {
 	clio::CmdlineInput input;
@@ -15,15 +15,26 @@ int main() try {
 	/* Parses input with custom parser */
 	// auto ip = input.get_value<std::string>("Enter server IP", clio::ip_v4);
 
-	/* for std::string clio::single_word (default) and clio::full_line parsers are provided */
-	// auto login = input.get_value<std::string>("Enter your login", clio::single_word);
+	/* for std::string you need to specify parser manually. Fortunately,
+	 * two parsers are already provided:
+	 * clio::full_line gets full line, including all spaces. Line may be empty
+	 * clio::single_word expects single non-empty word */
+	auto name = input.get_value<std::string>("Enter your name and surname", clio::full_line);
+	auto login = input.get_value<std::string>("Enter your login", clio::single_word);
+
+	/* One can hide symbols to enter passwords */
+	input.hide_input_symbols();
+	auto password = input.get_value<std::string>("Enter password (your input will be shown afterwards)", clio::single_word);
 
 	std::cout << std::endl;
-	std::cout << "You selected:" << std::endl
-		<< "port: " << port << std::endl
-		<< "option: " << option << std::endl
+	std::cout << "You entered:" << std::endl
+		<< "  port: " << port << std::endl
+		<< "  option: " << option << std::endl
+		// << "  ip: " << ip << std::endl
+		<< "  login: '" << login << "'" << std::endl
+		<< "  name: '" << name << "'" << std::endl
+		<< "  password: '" << password << "'" << std::endl
 		;
-
 	return 0;
 } catch (clio::RuntimeError& e) {
 	std::cout << "Input error: " << e.what() << std::endl;

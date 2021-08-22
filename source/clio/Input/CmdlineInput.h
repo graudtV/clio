@@ -1,6 +1,6 @@
 #pragma once
 
-#include "clio/errors.h"
+#include <clio/Errors.h>
 #include <type_traits>
 #include <string_view>
 
@@ -54,6 +54,8 @@ public:
 	 * report errors more precisely, depending on what exactly is wrong,
 	 * you should use the former alternative or even think about writing
 	 * you own parser (but it will require some knowledge in boost::spirit)
+	 * The latter one should report errors by throwing clio::ParserError to
+	 * bear the unified error printing format (do not print messages in stderr by yourself)
 	 */
 	template <class T, class Function,
 		std::enable_if_t<is_valid_verifier<Function, T>::value, int> = 0>
@@ -85,6 +87,7 @@ private:
 
 	void print_value_prompt(std::string_view prompt);
 	bool read_input(std::string& result);
+	void report_error(std::string_view descr);
 };
 
 class CmdlineInput::AttemptsLimitError : public RuntimeError {

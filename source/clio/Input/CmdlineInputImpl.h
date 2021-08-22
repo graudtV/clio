@@ -1,6 +1,7 @@
 #pragma once
 
 #include "default_parser.h"
+#include "Parser/ParserError.h"
 #include "platform.h"
 #include <cassert>
 
@@ -67,45 +68,37 @@ template <class T, class Parser, class Function>
 T CmdlineInput::get_value_impl(std::string_view prompt, Parser&& parser, Function&& verifier,
 	std::string_view parser_error_hint, std::string_view verification_error_hint)
 {
-	auto nattempts = m_nattempts;
-	assert(nattempts > 0 && "nattempts must be > 0");
-
 	std::string input;
-	T result{};
-
-	do {
+	
+	for (unsigned i = 0; i < m_nattempts; ++i) {
+		T result{}; // don't move it above. result should be cleared after each iteration
 		print_value_prompt(prompt);
 		bool ok = read_input(input);
 		if (!ok && m_exit_on_eof)
 			throw IOError("EOF received");
 		if (ok && try_parse(result, input, parser, verifier, parser_error_hint, verification_error_hint))
-			break; // successfully parsed
+			return result;
 		std::cout << std::endl;
-		--nattempts;
 		input.clear();
-	} while (nattempts > 0);
-	if (nattempts == 0)
-		throw AttemptsLimitError();
-	return result;
+	}
+	throw AttemptsLimitError();
 }
 
 template <class T, class Parser, class Function>
 bool CmdlineInput::try_parse(T& result, std::string& input, Parser& parser, Function& verifier,
 	std::string_view parser_error_hint, std::string_view verification_error_hint)
 {
-	auto fst = input.begin();
-	auto last = input.end();
-	bool parsed = boost::spirit::qi::phrase_parse(fst, last, parser, boost::spirit::qi::space, result);
-	bool ok = parsed && fst == last;
-
-	if (!ok) {
-		std::cerr << std::endl;
-		if (!parsed)
-			std::cerr << "Error: invalid input format" << std::endl;
-		else // fst != last
-			std::cerr << "Error: excessive symbols after input value" << std::endl;
-		if (!parser_error_hint.empty())
-			std::cerr << "Hint: " << parser_error_hint << std::endl;
+	auto fst = input.cbegin();
+	auto last = input.cend();
+	bool ok;
+	try {
+	 ok = boost::spirit::qi::phrase_parse(fst, last, parser, boost::spirit::qi::space, result);
+	} catch (ParserError& e) {
+		report_error(e.what());
+		return false;
+	}
+	if (!ok || fst != last) {
+		report_error(parser_error_hint);
 		return false;		
 	}
 	if constexpr (!std::is_same<Function, no_verifier_t>::value) {
@@ -130,6 +123,12 @@ CmdlineInput::read_input(std::string& result) {
 	if (m_hide_input_symbols)
 		return get_password(result);
 	return static_cast<bool>(std::getline(std::cin, result));
+}
+
+void CmdlineInput::report_error(std::string_view descr) {
+	std::cerr << std::endl;
+	if (!descr.empty())
+		std::cerr << "Error: " << descr << std::endl;
 }
 
 } // clio namespace end

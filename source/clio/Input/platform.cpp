@@ -1,4 +1,4 @@
-#include "clio/Input/platform.h"
+#include <clio/Input/platform.h>
 
 #if defined _WIN32 || defined _WIN64 || defined __CYGWIN__
 # error "Windows is not supported. Fuck you."

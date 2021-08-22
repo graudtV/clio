@@ -15,7 +15,7 @@ struct default_parser_exists : public std::false_type {};
 
 template <class T>
 struct default_parser_exists<T,
-	std::void_t<default_parser<T>>
+	std::void_t<typename default_parser<T>::type>
 > : public std::true_type {};
 
 /******* unsigned integer parsers *******/
