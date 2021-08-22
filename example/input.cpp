@@ -18,6 +18,12 @@ int main() try {
 	/* for std::string clio::single_word (default) and clio::full_line parsers are provided */
 	// auto login = input.get_value<std::string>("Enter your login", clio::single_word);
 
+	std::cout << std::endl;
+	std::cout << "You selected:" << std::endl
+		<< "port: " << port << std::endl
+		<< "option: " << option << std::endl
+		;
+
 	return 0;
 } catch (clio::RuntimeError& e) {
 	std::cout << "Input error: " << e.what() << std::endl;

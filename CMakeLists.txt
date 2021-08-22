@@ -21,10 +21,8 @@ target_sources(clio PRIVATE
 	src/Input/platform.cpp
 )
 
-# file(GLOB_RECURSE clio-headers "include/*.h")
-# message(STATUS "headers: ${clio-headers}")
-
 install(DIRECTORY include DESTINATION .)
 install(TARGETS clio DESTINATION lib)
+install(FILES cmake/clioConfig.cmake DESTINATION lib/cmake/clio)
 
 add_subdirectory(example)
