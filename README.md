@@ -7,7 +7,7 @@ Presently ***clio*** (**c**ommand **l**ine **i**nput-**o**utput library) is a he
 - C++17
 - Boost
 
-## Build & install
+## Build & Install
 ```bash
 mkdir build && cd build
 cmake ..
@@ -17,7 +17,7 @@ make example           # build examples
 ```
 
 ## Using clio in your project
-_clio_ can be found with cmake:
+If _clio_ was installed in accordance with [Build & Install](#Build-&-Install) section, it can be found with cmake:
 ```cmake
 find_package(clio REQUIRED)
 target_include_directories(your-target-name PRIVATE ${clio_INCLUDE_DIR})
