@@ -5,24 +5,7 @@ project(clio VERSION 1.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-find_package(Boost REQUIRED)
-message(STATUS "Boost include directory is: ${Boost_INCLUDE_DIR}")
-
-add_compile_options("-Wno-unknown-warning-option")
-
-include_directories(
-	"${CMAKE_SOURCE_DIR}/include"
-	"${Boost_INCLUDE_DIR}"
-)
-
-add_library(clio)
-
-target_sources(clio PRIVATE
-	src/Input/platform.cpp
-)
-
-install(DIRECTORY include DESTINATION .)
-install(TARGETS clio DESTINATION lib)
-install(FILES cmake/clioConfig.cmake DESTINATION lib/cmake/clio)
-
+add_subdirectory(source)
 add_subdirectory(example)
+
+install(FILES cmake/clioConfig.cmake DESTINATION lib/cmake/clio)

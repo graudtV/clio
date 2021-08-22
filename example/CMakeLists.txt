@@ -1,3 +1,12 @@
+find_package(Boost REQUIRED)
+message(STATUS "Boost include directory is: ${Boost_INCLUDE_DIR}")
+
+add_compile_options("-Wno-unknown-warning-option")
 link_libraries(clio)
 
-add_executable(input input.cpp)
+include_directories(
+	"${CMAKE_SOURCE_DIR}/source"
+	"${Boost_INCLUDE_DIR}"
+)
+
+add_executable(input EXCLUDE_FROM_ALL input.cpp)
