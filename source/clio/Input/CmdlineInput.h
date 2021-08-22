@@ -19,13 +19,19 @@ public:
 	class AttemptsLimitError;
 	class IOError;
 
-	/* Sets number of attempts to try parsing each input value (3 by default)
-	 * After all attempts are exhausted, AttemptsLimitError exception is thrown  */
+	/* Sets number of attempts to try parsing each input value
+	 * After all attempts are exhausted, AttemptsLimitError exception is thrown
+	 * Default: attempts = 3 */
 	CmdlineInput& set_attempts(unsigned attempts /* != 0 */);
 
-	/* Stop processing input by sending IOError if eof was sent.
-	 * Disabled by default */
+	/* Stop processing input by sending IOError if eof was received.
+	 * Default: exit = false */
 	CmdlineInput& exit_on_eof(bool exit = true);
+
+	/* Hide symbols during entering (with stars or even not print at all)
+	 * It is useful for entering passwords
+	 * Default: enable = false */
+	CmdlineInput& hide_input_symbols(bool enable = true);
 
 	/* Uses default parser. On error prints default hint for this parser */
 	template <class T>

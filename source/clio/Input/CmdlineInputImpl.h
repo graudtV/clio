@@ -28,6 +28,12 @@ CmdlineInput::exit_on_eof(bool exit /* = true */) {
 	return *this;
 }
 
+inline CmdlineInput&
+CmdlineInput::hide_input_symbols(bool enable /* = true */) {
+	m_hide_input_symbols = enable;
+	return *this;
+}
+
 template <class T>
 T CmdlineInput::get_value(std::string_view prompt) {
 	assert_default_parser_exists<T>();
