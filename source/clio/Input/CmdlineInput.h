@@ -24,10 +24,6 @@ public:
 	 * Default: attempts = 3 */
 	CmdlineInput& set_attempts(unsigned attempts /* != 0 */);
 
-	/* Stop processing input by sending IOError if eof was received.
-	 * Default: exit = false */
-	CmdlineInput& exit_on_eof(bool exit = true);
-
 	/* Hide symbols during entering (with stars or even not print at all)
 	 * It is useful for entering passwords
 	 * Default: enable = false */
@@ -74,7 +70,6 @@ public:
 
 private:
 	unsigned m_nattempts = 3;
-	bool m_exit_on_eof = false;
 	bool m_hide_input_symbols = false;
 
 	template <class T, class Parser, class Function>

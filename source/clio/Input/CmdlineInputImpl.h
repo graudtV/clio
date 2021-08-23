@@ -24,12 +24,6 @@ CmdlineInput::set_attempts(unsigned attempts /* != 0 */) {
 }
 
 inline CmdlineInput&
-CmdlineInput::exit_on_eof(bool exit /* = true */) {
-	m_exit_on_eof = exit;
-	return *this;
-}
-
-inline CmdlineInput&
 CmdlineInput::hide_input_symbols(bool enable /* = true */) {
 	m_hide_input_symbols = enable;
 	return *this;
@@ -73,10 +67,9 @@ T CmdlineInput::get_value_impl(std::string_view prompt, Parser&& parser, Functio
 	for (unsigned i = 0; i < m_nattempts; ++i) {
 		T result{}; // don't move it above. result should be cleared after each iteration
 		print_value_prompt(prompt);
-		bool ok = read_input(input);
-		if (!ok && m_exit_on_eof)
+		if (!read_input(input))
 			throw IOError("EOF received");
-		if (ok && try_parse(result, input, parser, verifier, parser_error_hint, verification_error_hint))
+		if (try_parse(result, input, parser, verifier, parser_error_hint, verification_error_hint))
 			return result;
 		std::cout << std::endl;
 		input.clear();
@@ -120,6 +113,7 @@ CmdlineInput::print_value_prompt(std::string_view prompt) {
 
 inline bool
 CmdlineInput::read_input(std::string& result) {
+	std::cerr << "trying to get input" << std::endl;
 	if (m_hide_input_symbols)
 		return get_password(result);
 	return static_cast<bool>(std::getline(std::cin, result));
