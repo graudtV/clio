@@ -14,6 +14,7 @@ target_compile_options(clio PRIVATE "-Wno-unknown-warning-option")
 target_sources(clio PRIVATE
 	"clio/Input/CmdlineInput.cpp"
 	"clio/Input/platform.cpp"
+	"clio/Output/MultithreadedPrinter.cpp"
 )
 
 install(TARGETS clio DESTINATION lib)
