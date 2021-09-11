@@ -20,6 +20,6 @@ make example           # build examples
 If _clio_ was installed in accordance with [Build & Install](#Build--Install) section, it can be found with cmake:
 ```cmake
 find_package(clio REQUIRED)
-target_include_directories(your-target-name PRIVATE ${clio_INCLUDE_DIR})
-target_link_libraries(your-target-name PRIVATE ${clio_LIBRARY_DIR})
+target_link_libraries(your-target-name PRIVATE clio)
 ```
+The last line automatically setups all necessary _clio_ include directories and libraries for your target
