@@ -1,10 +1,7 @@
-find_package(Boost REQUIRED)
-message(STATUS "Boost include directory is: ${Boost_INCLUDE_DIR}")
-
 add_compile_options("-Wno-unknown-warning-option")
 link_libraries(clio)
 
-include_directories(
+include_directories(SYSTEM
 	"${CMAKE_SOURCE_DIR}/source"
 	"${Boost_INCLUDE_DIR}"
 )

@@ -7,8 +7,6 @@
 
 namespace clio {
 
-struct no_verifier_t {} no_verifier;
-
 template <class T>
 constexpr void assert_default_parser_exists() {
 	static_assert(default_parser_exists<T>::value,
@@ -16,23 +14,10 @@ constexpr void assert_default_parser_exists() {
 		"Please use other type or specify parser manually");	
 }
 
-inline CmdlineInput&
-CmdlineInput::set_attempts(unsigned attempts /* != 0 */) {
-	assert(attempts > 0 && "number of attempts must be > 0");
-	m_nattempts = attempts;
-	return *this;
-}
-
-inline CmdlineInput&
-CmdlineInput::hide_input_symbols(bool enable /* = true */) {
-	m_hide_input_symbols = enable;
-	return *this;
-}
-
 template <class T>
 T CmdlineInput::get_value(std::string_view prompt) {
 	assert_default_parser_exists<T>();
-	return get_value_impl<T>(prompt, default_parser_t<T>{}, no_verifier,
+	return get_value_impl<T>(prompt, default_parser_t<T>{}, no_verifier_t{},
 		default_parser<T>::error_hint(), "");
 }
 
@@ -47,7 +32,7 @@ T CmdlineInput::get_value(std::string_view prompt, Function&& verifier, std::str
 template <class T, class Parser,
 	std::enable_if_t<!is_valid_verifier<Parser, T>::value, int> /* = 0 */>
 T CmdlineInput::get_value(std::string_view prompt, Parser&& parser) {
-	return get_value_impl<T>(prompt, std::forward<Parser>(parser), no_verifier,
+	return get_value_impl<T>(prompt, std::forward<Parser>(parser), no_verifier_t{},
 		"", "");
 }
 
@@ -94,34 +79,13 @@ bool CmdlineInput::try_parse(T& result, std::string& input, Parser& parser, Func
 		report_error(parser_error_hint);
 		return false;		
 	}
-	if constexpr (!std::is_same<Function, no_verifier_t>::value) {
+	if constexpr (!std::is_same_v<std::remove_reference_t<Function>, no_verifier_t>) {
 		ok = static_cast<bool>(verifier(result));
 		if (!ok && !verification_error_hint.empty())
 			std::cerr << std::endl << "Error: " << verification_error_hint << std::endl;
 		return ok;
 	}
 	return true;
-}
-
-inline void
-CmdlineInput::print_value_prompt(std::string_view prompt) {
-	std::cout << prompt << ": ";
-	std::cout.flush();
-	if (!std::cout)
-		throw IOError("stdout is broken");
-}
-
-inline bool
-CmdlineInput::read_input(std::string& result) {
-	if (m_hide_input_symbols)
-		return get_password(result);
-	return static_cast<bool>(std::getline(std::cin, result));
-}
-
-void CmdlineInput::report_error(std::string_view descr) {
-	std::cerr << std::endl;
-	if (!descr.empty())
-		std::cerr << "Error: " << descr << std::endl;
 }
 
 } // clio namespace end

@@ -69,6 +69,8 @@ public:
 	T get_value(std::string_view prompt, Parser&& parser, Function&& verifier, std::string_view verification_error_hint = "");
 
 private:
+	struct no_verifier_t {};
+
 	unsigned m_nattempts = 3;
 	bool m_hide_input_symbols = false;
 

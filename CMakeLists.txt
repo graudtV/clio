@@ -5,7 +5,9 @@ project(clio VERSION 1.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+find_package(Boost REQUIRED)
+message(STATUS "Found Boost at: ${Boost_INCLUDE_DIR}")
+
 add_subdirectory(source)
 add_subdirectory(example)
-
-install(FILES cmake/clioConfig.cmake DESTINATION lib/cmake/clio)
+add_subdirectory(cmake)
