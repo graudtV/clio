@@ -113,7 +113,6 @@ CmdlineInput::print_value_prompt(std::string_view prompt) {
 
 inline bool
 CmdlineInput::read_input(std::string& result) {
-	std::cerr << "trying to get input" << std::endl;
 	if (m_hide_input_symbols)
 		return get_password(result);
 	return static_cast<bool>(std::getline(std::cin, result));
