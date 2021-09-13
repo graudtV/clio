@@ -23,8 +23,8 @@ int main() try {
 	auto login = input.get_value<std::string>("Enter your login", clio::single_word);
 
 	/* One can hide symbols to enter passwords */
-	input.hide_input_symbols();
-	auto password = input.get_value<std::string>("Enter password (your input will be shown afterwards)", clio::single_word);
+	auto password = input.with_hidden_symbols()
+		.get_value<std::string>("Enter password (your input will be shown afterwards)", clio::single_word);
 
 	std::cout << std::endl;
 	std::cout << "You entered:" << std::endl

@@ -29,6 +29,10 @@ public:
 	 * Default: enable = false */
 	CmdlineInput& hide_input_symbols(bool enable = true);
 
+	/* Returns a copy of this object and applies hide_input_symbols(enable)
+	 * to it. Convenient if you want to apply the setting only for one input value */
+	CmdlineInput with_hidden_symbols(bool enable = true);
+
 	/* Uses default parser. On error prints default hint for this parser */
 	template <class T>
 	T get_value(std::string_view prompt);

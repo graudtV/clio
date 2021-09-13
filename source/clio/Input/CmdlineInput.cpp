@@ -13,6 +13,12 @@ CmdlineInput& CmdlineInput::hide_input_symbols(bool enable /* = true */) {
 	return *this;
 }
 
+CmdlineInput CmdlineInput::with_hidden_symbols(bool enable /* = true */) {
+	CmdlineInput res(*this);
+	res.hide_input_symbols(enable);
+	return res;
+}
+
 void CmdlineInput::print_value_prompt(std::string_view prompt) {
 	std::cout << prompt << ": ";
 	std::cout.flush();
