@@ -1,6 +1,0 @@
-# This file describes versions of clio dependencies,
-# which were used during clio building
-
-set(CLIO_DEPS_Boost_VERSION_MAJOR @Boost_VERSION_MAJOR@)
-set(LIO_DEPS_Boost_VERSION_MINOR @Boost_VERSION_MINOR@)
-set(CLIO_DEPS_Boost_VERSION_STRING @Boost_VERSION_STRING@)

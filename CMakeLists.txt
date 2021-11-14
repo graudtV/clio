@@ -1,15 +1,14 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.7.0 FATAL_ERROR)
 
-project(clio VERSION 1.1)
+project(clio VERSION 2.0)
 
 message(STATUS "clio version: ${PROJECT_VERSION}")
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+include(cmake/helpers.cmake)
 
-find_package(Boost REQUIRED)
-message(STATUS "Using Boost ${Boost_VERSION_STRING} at ${Boost_INCLUDE_DIR}")
+clio_install_public_header_dirs(
+  include/IO
+  include/utility
+)
 
-add_subdirectory(source)
-add_subdirectory(example)
-add_subdirectory(cmake)
+add_subdirectory(lib)
