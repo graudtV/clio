@@ -1,3 +1,3 @@
 #pragma once
 
-#include "../../lib/IO/CmdlineInput/CmdlineInput.hpp"
+#include <clio/lib/IO/CmdlineInput/CmdlineInput.hpp>

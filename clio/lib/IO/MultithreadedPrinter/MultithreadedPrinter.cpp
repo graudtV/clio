@@ -1,4 +1,4 @@
-#include "MultithreadedPrinter.h"
+#include "MultithreadedPrinter.hpp"
 
 namespace clio {
 

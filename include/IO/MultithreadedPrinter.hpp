@@ -1,3 +1,3 @@
 #pragma once
 
-#include "../../lib/IO/MultithreadedPrinter/MultithreadedPrinter.hpp"
+#include <clio/lib/IO/MultithreadedPrinter/MultithreadedPrinter.hpp>
